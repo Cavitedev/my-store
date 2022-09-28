@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Product, products } from '../../models/products';
+import { Observable } from 'rxjs';
+import { Product } from '../../models/products';
 
 @Component({
   selector: 'app-product-list',
@@ -7,17 +9,18 @@ import { Product, products } from '../../models/products';
   styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit {
-  
-  products: Product[] = products;
-  constructor() {}
+  products!: Observable<Product[]>;
+  constructor(private http: HttpClient) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.products = this.http.get<Product[]>('/assets/products.json');
+  }
 
   share() {
     window.alert('The product has been shared');
   }
 
-  onNotify(){
-    window.alert("You will be alerted when the product goes to sale");
+  onNotify() {
+    window.alert('You will be alerted when the product goes to sale');
   }
 }
